@@ -1,6 +1,6 @@
 {
   "name": "svelte-icon-generator",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Auto generate Svelte icon components.",
   "bin": {
     "svig": "./dist/index.js"

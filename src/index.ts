@@ -36,16 +36,33 @@ function generateSvelteComponent(svgContent: string): string {
 `;
 }
 
+function dashedToCamelCase(str: string): string {
+	return str
+		.split('-')
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		.join('');
+}
+
+function getSvelteFileName(icon: Icon): string {
+	return `${dashedToCamelCase(icon.title)}.svelte`;
+}
+
 function main() {
 	const args = process.argv.slice(2);
 	if (args.length === 0) {
+		console.log("Usage: svig icon-one icon-two . . .")
 		return;
 	}
 	
 	for (const arg of args) {
 		const icon = icons.find(icon => icon.title === arg);
 		if (icon) {
-			console.log(generateSvelteComponent(icon.svg));
+			const filename = getSvelteFileName(icon);
+			const content = generateSvelteComponent(icon.svg);
+			fs.writeFileSync(filename, content);
+			console.log(`Generated: '${filename}'`);
+		} else {
+			console.log(`Icon not found: '${arg}'`);
 		}
 	}
 }
