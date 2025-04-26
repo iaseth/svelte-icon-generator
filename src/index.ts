@@ -18,6 +18,36 @@ const iconsJson = JSON.parse(
 
 const icons: Icon[] = iconsJson.icons;
 
-for (const icon of icons) {
-	console.log(`${icon.title} (${icon.svg.length}b)`);
+function generateSvelteComponent(svgContent: string): string {
+	svgContent = svgContent.trim();
+	return `
+<script lang="ts">
+	interface Props {
+		size?: number,
+		class?: string
+	}
+	let { size, ...props }: Props = $props();
+	let px = \`\${size || 160}px\`;
+</script>
+
+<div style:height={px} style:width={px} class={props.class || ""}>
+	${svgContent}
+</div>
+`;
 }
+
+function main() {
+	const args = process.argv.slice(2);
+	if (args.length === 0) {
+		return;
+	}
+	
+	for (const arg of args) {
+		const icon = icons.find(icon => icon.title === arg);
+		if (icon) {
+			console.log(generateSvelteComponent(icon.svg));
+		}
+	}
+}
+
+main()
