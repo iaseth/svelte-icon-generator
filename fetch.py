@@ -1,3 +1,5 @@
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -57,6 +59,13 @@ def main():
 		with open(svg_path, "w") as f:
 			f.write(icon['svg'])
 		print(f"\tSaved: {svg_path}")
+
+	output_json_path = "src/icons.json"
+	jo = {}
+	jo['icons'] = icons
+	with open(output_json_path, "w") as f:
+		json.dump(jo, f, sort_keys=True)
+	print(f"Saved: {output_json_path} ({len(icons)} icons)")
 
 
 if __name__ == '__main__':
