@@ -2,8 +2,28 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def main():
-	response = requests.get("https://heroicons.com/")
+
+session = requests.session()
+
+ATTRS_TO_KEEP = [
+	'xmlns', 'fill', 'viewbox', 'stroke-width', 'stroke',
+	# 'class', 'aria-hidden', 'data-slot'
+]
+
+
+def svg_tag_to_src(svg):
+	for attr in list(svg.attrs):
+		if attr not in ATTRS_TO_KEEP:
+			del svg[attr]
+
+	src = str(svg).strip()
+	lines = [line.strip() for line in src.split("\n") if line.strip()]
+	src = "".join(lines)
+	return src
+
+
+def get_icons(url, prefix=None):
+	response = session.get(url)
 	soup = BeautifulSoup(response.text, "lxml")
 
 	main = soup.find("main")
@@ -14,9 +34,22 @@ def main():
 		svg = group.find("svg")
 		if svg:
 			icon = {}
-			icon['title'] = list(group.children)[-1]['title']
-			icon['svg'] = str(svg).strip()
+			title = list(group.children)[-1]['title']
+			icon['title'] = f"{prefix}-{title}" if prefix else title
+			icon['svg'] = svg_tag_to_src(svg)
 			icons.append(icon)
+
+	return icons
+
+
+def main():
+	icons = [
+		*get_icons("https://heroicons.com/"),
+		*get_icons("https://heroicons.com/solid", prefix="solid"),
+		*get_icons("https://heroicons.com/mini", prefix="mini"),
+		*get_icons("https://heroicons.com/micro", prefix="micro"),
+	]
+	print(f"Found {len(icons)} icons")
 
 	for i, icon in enumerate(icons, start=1):
 		svg_path = f"svgs/{icon['title']}.svg"
