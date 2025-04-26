@@ -1,20 +1,32 @@
 {
   "name": "svelte-icon-generator",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Auto generate Svelte icon components.",
   "bin": {
     "svig": "./dist/index.js"
   },
-  "files": ["dist/", "README.md", "LICENSE"],
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts"
   },
-  "keywords": ["svelte", "icons", "typescript", "interface", "cli", "generator"],
+  "keywords": [
+    "svelte",
+    "icons",
+    "typescript",
+    "interface",
+    "cli",
+    "generator"
+  ],
   "author": "Ankur Seth",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^22.15.2"
+  }
 }
