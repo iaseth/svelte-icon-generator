@@ -41,6 +41,7 @@ def get_icons(url, prefix=None):
 			icon['svg'] = svg_tag_to_src(svg)
 			icons.append(icon)
 
+	icons.sort(key=lambda x:x['title'])
 	return icons
 
 
