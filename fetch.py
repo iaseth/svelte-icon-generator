@@ -15,7 +15,7 @@ def main():
 		if svg:
 			icon = {}
 			icon['title'] = list(group.children)[-1]['title']
-			icon['svg'] = str(svg)
+			icon['svg'] = str(svg).strip()
 			icons.append(icon)
 
 	for i, icon in enumerate(icons, start=1):
