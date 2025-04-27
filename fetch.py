@@ -61,7 +61,7 @@ def main():
 			f.write(icon['svg'])
 		print(f"\tSaved: {svg_path}")
 
-	output_json_path = "src/icons.json"
+	output_json_path = "src/data/icons.json"
 	jo = {}
 	jo['icons'] = icons
 	with open(output_json_path, "w") as f:
