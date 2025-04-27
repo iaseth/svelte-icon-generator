@@ -36,12 +36,12 @@ def get_icons(url, prefix=None):
 		svg = group.find("svg")
 		if svg:
 			icon = {}
-			title = list(group.children)[-1]['title']
-			icon['title'] = f"{prefix}-{title}" if prefix else title
+			name = list(group.children)[-1]['title']
+			icon['name'] = f"{prefix}-{name}" if prefix else name
 			icon['svg'] = svg_tag_to_src(svg)
 			icons.append(icon)
 
-	icons.sort(key=lambda x:x['title'])
+	icons.sort(key=lambda x:x['name'])
 	return icons
 
 
@@ -55,8 +55,8 @@ def main():
 	print(f"Found {len(icons)} icons")
 
 	for i, icon in enumerate(icons, start=1):
-		svg_path = f"svgs/{icon['title']}.svg"
-		print(f"{i:4}. '{icon['title']}'")
+		svg_path = f"svgs/{icon['name']}.svg"
+		print(f"{i:4}. '{icon['name']}'")
 		with open(svg_path, "w") as f:
 			f.write(icon['svg'])
 		print(f"\tSaved: {svg_path}")

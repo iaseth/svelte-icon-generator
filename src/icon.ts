@@ -4,7 +4,7 @@ import { readFile } from "./fsutils.js";
 
 
 export interface Icon {
-	title: string,
+	name: string,
 	svg: string
 }
 

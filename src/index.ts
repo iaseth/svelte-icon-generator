@@ -9,9 +9,9 @@ import { generateSvelteComponent, icons } from './icon.js';
 
 function generateIcons (iconNames: string[]) {
 	for (const iconName of iconNames) {
-		const icon = icons.find(icon => icon.title === iconName);
+		const icon = icons.find(icon => icon.name === iconName);
 		if (icon) {
-			const filename = getSvelteFileName(icon.title);
+			const filename = getSvelteFileName(icon.name);
 			const content = generateSvelteComponent(icon.svg);
 			fs.writeFileSync(filename, content);
 			console.log(`Generated: '${filename}'`);
@@ -24,7 +24,7 @@ function generateIcons (iconNames: string[]) {
 function listIcons () {
 	for (let i=0; i<icons.length; i++) {
 		const icon = icons[i];
-		console.log(`Icon ${i+1} => '${icon.title}'`);
+		console.log(`Icon ${i+1} => '${icon.name}'`);
 	}
 }
 
