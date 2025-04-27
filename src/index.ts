@@ -21,6 +21,13 @@ function generateIcons (iconNames: string[]) {
 	}
 }
 
+function listIcons () {
+	for (let i=0; i<icons.length; i++) {
+		const icon = icons[i];
+		console.log(`Icon ${i+1} => '${icon.title}'`);
+	}
+}
+
 function main() {
 	const parser = new ArgumentParser({
 		description: 'svig - Command-line tool for generating Svelte Icon Components',
@@ -51,6 +58,9 @@ function main() {
 				generateIcons(rest);
 			}
 			break;
+
+		case 'list':
+			listIcons(); break;
 		default:
 			console.log(`Unknown command: '${args.command}'`); return;
 	}
