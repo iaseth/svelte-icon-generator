@@ -6,7 +6,7 @@ import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 
 
 
-function addIcons (iconNames: string[], dirpath: string) {
+function addIconsCommand (iconNames: string[], dirpath: string) {
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to add!`); return;
 	}
@@ -30,7 +30,7 @@ function addIcons (iconNames: string[], dirpath: string) {
 	}
 }
 
-function removeIcons (iconNames: string[], dirpath: string) {
+function removeIconsCommand (iconNames: string[], dirpath: string) {
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to remove!`); return;
 	}
@@ -53,7 +53,7 @@ function removeIcons (iconNames: string[], dirpath: string) {
 	}
 }
 
-function generateIcons (dirpath: string) {
+function generateIconsCommand (dirpath: string) {
 	const config = getSvigConfig();
 	if (config.icons.length === 0) {
 		console.log(`No icond found in config: '${svigConfigPath}'`)
@@ -71,7 +71,7 @@ function generateIcons (dirpath: string) {
 	}
 }
 
-function listIcons (iconArr: IconDS[]) {
+function listIconsCommand (iconArr: IconDS[]) {
 	for (let i=0; i < iconArr.length; i++) {
 		const icon = iconArr[i];
 		console.log(`Icon ${i+1} => '${icon.name}'`);
@@ -101,17 +101,23 @@ function main() {
 
 	switch (args.command) {
 		case "add":
-			addIcons(rest, args.out); break;
+		case "a":
+			addIconsCommand(rest, args.out); break;
 
 		case "remove":
 		case "rm":
-			removeIcons(rest, args.out); break;
+		case "r":
+			removeIconsCommand(rest, args.out); break;
 
 		case "generate":
 		case "gen":
-			generateIcons(args.out); break;
+		case "g":
+			generateIconsCommand(args.out); break;
 
-		case 'list': listIcons(icons); break;
+		case 'list':
+		case 'l':
+			listIconsCommand(icons); break;
+
 		default:
 			console.log(`Unknown command: '${args.command}'`); return;
 	}
