@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
 import { ArgumentParser } from 'argparse';
-import { getSvelteComponentPath, getSvelteFileName } from './utils.js';
-import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponent, generateSvelteComponentOnDisk, icons } from './icon.js';
+import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponentOnDisk, icons } from './icon.js';
 import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 
 
