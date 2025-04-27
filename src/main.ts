@@ -37,10 +37,14 @@ function main() {
 		case "r":
 			removeIconsCommand(rest, args.out); break;
 
+		case "create":
+		case "c":
+			generateIconsCommand(args.out, false); break;
+
 		case "generate":
 		case "gen":
 		case "g":
-			generateIconsCommand(args.out); break;
+			generateIconsCommand(args.out, true); break;
 
 		case 'list':
 		case 'l':

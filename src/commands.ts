@@ -50,10 +50,10 @@ export function removeIconsCommand (iconNames: string[], dirpath: string) {
 	}
 }
 
-export function generateIconsCommand (dirpath: string) {
+export function generateIconsCommand (dirpath: string, overwrite: boolean) {
 	const config = getSvigConfig();
 	if (config.icons.length === 0) {
-		console.log(`No icond found in config: '${svigConfigPath}'`)
+		console.log(`No icons found in config: '${svigConfigPath}'`)
 		return;
 	}
 
@@ -61,7 +61,7 @@ export function generateIconsCommand (dirpath: string) {
 	for (const iconName of config.icons) {
 		const icon = icons.find(icon => icon.name === iconName);
 		if (icon) {
-			generateSvelteComponentOnDisk(icon, dirpath, true);
+			generateSvelteComponentOnDisk(icon, dirpath, overwrite);
 		} else {
 			console.log(`\tIcon not found: '${iconName}'`);
 		}
