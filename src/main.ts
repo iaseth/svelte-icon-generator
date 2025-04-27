@@ -1,20 +1,22 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs';
+import path from 'path';
 import { ArgumentParser } from 'argparse';
 import { getSvelteFileName } from './utils.js';
 import { IconDS, generateSvelteComponent, icons } from './icon.js';
 
 
 
-function generateIcons (iconNames: string[]) {
+function generateIcons (iconNames: string[], dirpath: string) {
 	for (const iconName of iconNames) {
 		const icon = icons.find(icon => icon.name === iconName);
 		if (icon) {
 			const filename = getSvelteFileName(icon.name);
+			const filepath = path.join(dirpath, filename);
 			const content = generateSvelteComponent(icon.svg);
-			fs.writeFileSync(filename, content);
-			console.log(`Generated: '${filename}'`);
+			fs.writeFileSync(filepath, content);
+			console.log(`Generated: '${filepath}'`);
 		} else {
 			console.log(`Icon not found: '${iconName}'`);
 		}
@@ -55,7 +57,7 @@ function main() {
 				console.log("Usage: svig generate icon-one icon-two . . .")
 				return;
 			} else {
-				generateIcons(rest);
+				generateIcons(rest, args.out);
 			}
 			break;
 
