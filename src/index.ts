@@ -3,7 +3,7 @@
 import * as fs from 'fs';
 import { ArgumentParser } from 'argparse';
 import { getSvelteFileName } from './utils.js';
-import { generateSvelteComponent, icons } from './icon.js';
+import { IconDS, generateSvelteComponent, icons } from './icon.js';
 
 
 
@@ -21,9 +21,9 @@ function generateIcons (iconNames: string[]) {
 	}
 }
 
-function listIcons () {
-	for (let i=0; i<icons.length; i++) {
-		const icon = icons[i];
+function listIcons (iconArr: IconDS[]) {
+	for (let i=0; i < iconArr.length; i++) {
+		const icon = iconArr[i];
 		console.log(`Icon ${i+1} => '${icon.name}'`);
 	}
 }
@@ -60,7 +60,7 @@ function main() {
 			break;
 
 		case 'list':
-			listIcons(); break;
+			listIcons(icons); break;
 		default:
 			console.log(`Unknown command: '${args.command}'`); return;
 	}
