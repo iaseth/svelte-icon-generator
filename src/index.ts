@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs';
-import { getSvelteFileName } from './utils';
-import { generateSvelteComponent, icons } from './icon';
+import { getSvelteFileName } from './utils.js';
+import { generateSvelteComponent, icons } from './icon.js';
 
 
 
