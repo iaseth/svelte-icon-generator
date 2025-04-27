@@ -8,7 +8,20 @@ import { IconDS, generateSvelteComponent, icons } from './icon.js';
 
 
 
+function addIcons (iconNames: string[], dirpath: string) {
+	//
+}
+
+function removeIcons (iconNames: string[], dirpath: string) {
+	//
+}
+
 function generateIcons (iconNames: string[], dirpath: string) {
+	if (iconNames.length === 0) {
+		console.log("Usage: svig generate icon-one icon-two . . .")
+		return;
+	}
+
 	for (const iconName of iconNames) {
 		const icon = icons.find(icon => icon.name === iconName);
 		if (icon) {
@@ -52,17 +65,10 @@ function main() {
 	const [args, rest] = parser.parse_known_args();
 
 	switch (args.command) {
-		case "generate":
-			if (rest.length === 0) {
-				console.log("Usage: svig generate icon-one icon-two . . .")
-				return;
-			} else {
-				generateIcons(rest, args.out);
-			}
-			break;
-
-		case 'list':
-			listIcons(icons); break;
+		case "add": addIcons(rest, args.out); break;
+		case "rm": removeIcons(rest, args.out); break;
+		case "generate": generateIcons(rest, args.out); break;
+		case 'list': listIcons(icons); break;
 		default:
 			console.log(`Unknown command: '${args.command}'`); return;
 	}
