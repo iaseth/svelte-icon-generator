@@ -1,19 +1,56 @@
 #!/usr/bin/env node
 
-import * as fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { ArgumentParser } from 'argparse';
 import { getSvelteFileName } from './utils.js';
 import { IconDS, generateSvelteComponent, icons } from './icon.js';
+import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 
 
 
 function addIcons (iconNames: string[], dirpath: string) {
-	//
+	if (iconNames.length === 0) {
+		console.log(`Please provide icons to add!`); return;
+	}
+
+	const config = getSvigConfig();
+	for (const iconName of iconNames) {
+		const icon = icons.find(ic => ic.name === iconName);
+		if (icon) {
+			if (config.icons.includes(iconName)) {
+				console.log(`Icon already added: '${iconName}'`);
+			} else {
+				console.log(`Icon was added: '${iconName}'`);
+				config.icons.push(iconName);
+				saveSvigConfig(config);
+			}
+		} else {
+			console.log(`Icon not found: '${iconName}'`);
+		}
+	}
 }
 
 function removeIcons (iconNames: string[], dirpath: string) {
-	//
+	if (iconNames.length === 0) {
+		console.log(`Please provide icons to remove!`); return;
+	}
+
+	const config = getSvigConfig();
+	if (!config.icons || config.icons.length === 0) {
+		console.log(`No icons found in config: '${svigConfigPath}'`);
+		return;
+	}
+
+	for (const iconName of iconNames) {
+		if (config.icons.includes(iconName)) {
+			config.icons = config.icons.filter(ic => ic !== iconName);
+			saveSvigConfig(config);
+			console.log(`Icon was removed: '${iconName}'`);
+		} else {
+			console.log(`Icon not present in config: '${iconName}'`);
+		}
+	}
 }
 
 function generateIcons (iconNames: string[], dirpath: string) {
