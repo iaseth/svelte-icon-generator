@@ -1,0 +1,13 @@
+
+<script lang="ts">
+	interface Props {
+		size?: number,
+		class?: string
+	}
+	let { size, ...props }: Props = $props();
+	let px = `${size || 160}px`;
+</script>
+
+<div style:height={px} style:width={px} class={props.class || ""}>
+	{{{ svgContent }}}
+</div>
