@@ -13,7 +13,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc && cp -r src/data dist",
+    "build": "tsc && cp -r src/data src/templates dist",
     "start": "ts-node src/index.ts"
   },
   "keywords": [

@@ -12,13 +12,17 @@ export interface Icon {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const iconsJson = JSON.parse(
-	fs.readFileSync(path.join(__dirname, 'data/icons.json'), 'utf-8')
-);
+function readFile (filepath: string): string {
+	return fs.readFileSync(path.join(__dirname, filepath), 'utf-8');
+}
+
+const iconsJson = JSON.parse(readFile('data/icons.json'));
 
 export const icons: Icon[] = iconsJson.icons;
 
 export function generateSvelteComponent(svgContent: string): string {
+	const template = readFile('templates/SvelteComponent.html');
+	console.log(template);
 	svgContent = svgContent.trim();
 	return `
 <script lang="ts">
