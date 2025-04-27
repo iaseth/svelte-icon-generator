@@ -23,6 +23,7 @@ export function getSvigConfig (): SvigConfigDS {
 
 export function saveSvigConfig (config: SvigConfigDS) {
 	try {
+		config.icons = config.icons.sort();
 		const jsonString = JSON.stringify(config, null, 2); // Indented with 2 spaces
 		fs.writeFileSync(svigConfigPath, jsonString);
 	} catch (error) {
