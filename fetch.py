@@ -61,11 +61,14 @@ def main():
 			f.write(icon['svg'])
 		print(f"\tSaved: {svg_path}")
 
-	output_json_path = "src/data/icons.json"
 	jo = {}
 	jo['icons'] = icons
+	icons_json = json.dumps(jo, sort_keys=True)
+	icons_json = icons_json.replace("viewbox", "viewBox")
+
+	output_json_path = "src/data/icons.json"
 	with open(output_json_path, "w") as f:
-		json.dump(jo, f, sort_keys=True)
+		f.write(icons_json)
 	print(f"Saved: {output_json_path} ({len(icons)} icons)")
 
 
