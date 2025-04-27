@@ -27,9 +27,11 @@
   "author": "Ankur Seth",
   "license": "MIT",
   "devDependencies": {
+    "@types/argparse": "^2.0.17",
     "@types/node": "^22.15.2"
   },
   "dependencies": {
+    "argparse": "^2.0.1",
     "handlebars": "^4.7.8"
   }
 }
