@@ -11,13 +11,16 @@ export interface IconDS {
 }
 
 const iconsJson = JSON.parse(readFile('data/icons.json'));
-
 export const icons: IconDS[] = iconsJson.icons;
 
+let cachedTemplate: HandlebarsTemplateDelegate|null = null;
+
 export function generateSvelteComponent(svgContent: string): string {
-	const templateSrc = readFile('templates/SvelteComponent.hbs');
-	const template = Handlebars.compile(templateSrc);
-	return template({ svgContent });
+	if (cachedTemplate === null) {
+		const templateSrc = readFile('templates/SvelteComponent.hbs');
+		cachedTemplate = Handlebars.compile(templateSrc);
+	}
+	return cachedTemplate({ svgContent });
 }
 
 export function generateSvelteComponentOnDisk(icon: IconDS, dirpath: string, overwrite: boolean = false) {
