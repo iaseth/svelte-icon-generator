@@ -1,9 +1,9 @@
 {
   "name": "svelte-icon-generator",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Auto generate Svelte icon components.",
   "bin": {
-    "svig": "./dist/index.js"
+    "svig": "./dist/main.js"
   },
   "files": [
     "dist/",
@@ -11,10 +11,10 @@
     "LICENSE"
   ],
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "tsc && cp -r src/data src/templates dist",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/main.ts"
   },
   "keywords": [
     "svelte",
