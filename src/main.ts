@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import { ArgumentParser } from 'argparse';
-import { getSvelteFileName } from './utils.js';
-import { IconDS, generateSvelteComponent, icons } from './icon.js';
+import { getSvelteComponentPath, getSvelteFileName } from './utils.js';
+import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponent, generateSvelteComponentOnDisk, icons } from './icon.js';
 import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 
 
@@ -20,10 +20,12 @@ function addIcons (iconNames: string[], dirpath: string) {
 		if (icon) {
 			if (config.icons.includes(iconName)) {
 				console.log(`Icon already added: '${iconName}'`);
+				generateSvelteComponentOnDisk(icon, dirpath, false);
 			} else {
 				console.log(`Icon was added: '${iconName}'`);
 				config.icons.push(iconName);
 				saveSvigConfig(config);
+				generateSvelteComponentOnDisk(icon, dirpath, true);
 			}
 		} else {
 			console.log(`Icon not found: '${iconName}'`);
@@ -50,25 +52,24 @@ function removeIcons (iconNames: string[], dirpath: string) {
 		} else {
 			console.log(`Icon not present in config: '${iconName}'`);
 		}
+		deleteSvelteComponentOnDisk(iconName, dirpath);
 	}
 }
 
-function generateIcons (iconNames: string[], dirpath: string) {
-	if (iconNames.length === 0) {
-		console.log("Usage: svig generate icon-one icon-two . . .")
+function generateIcons (dirpath: string) {
+	const config = getSvigConfig();
+	if (config.icons.length === 0) {
+		console.log(`No icond found in config: '${svigConfigPath}'`)
 		return;
 	}
 
-	for (const iconName of iconNames) {
+	console.log(`Generating ${config.icons.length} component(s) . . .`)
+	for (const iconName of config.icons) {
 		const icon = icons.find(icon => icon.name === iconName);
 		if (icon) {
-			const filename = getSvelteFileName(icon.name);
-			const filepath = path.join(dirpath, filename);
-			const content = generateSvelteComponent(icon.svg);
-			fs.writeFileSync(filepath, content);
-			console.log(`Generated: '${filepath}'`);
+			generateSvelteComponentOnDisk(icon, dirpath, true);
 		} else {
-			console.log(`Icon not found: '${iconName}'`);
+			console.log(`\tIcon not found: '${iconName}'`);
 		}
 	}
 }
@@ -102,9 +103,17 @@ function main() {
 	const [args, rest] = parser.parse_known_args();
 
 	switch (args.command) {
-		case "add": addIcons(rest, args.out); break;
-		case "rm": removeIcons(rest, args.out); break;
-		case "generate": generateIcons(rest, args.out); break;
+		case "add":
+			addIcons(rest, args.out); break;
+
+		case "remove":
+		case "rm":
+			removeIcons(rest, args.out); break;
+
+		case "generate":
+		case "gen":
+			generateIcons(args.out); break;
+
 		case 'list': listIcons(icons); break;
 		default:
 			console.log(`Unknown command: '${args.command}'`); return;

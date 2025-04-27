@@ -1,3 +1,4 @@
+import path from 'path';
 
 
 
@@ -10,4 +11,10 @@ function dashedToCamelCase(str: string): string {
 
 export function getSvelteFileName(title: string): string {
 	return `${dashedToCamelCase(title)}.svelte`;
+}
+
+export function getSvelteComponentPath(iconName: string, dirpath: string): string {
+	const filename = getSvelteFileName(iconName);
+	const filepath = path.join(dirpath, filename);
+	return filepath;
 }
