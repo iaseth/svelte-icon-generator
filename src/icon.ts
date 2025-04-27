@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const iconsJson = JSON.parse(
-	fs.readFileSync(path.join(__dirname, 'data/icons.json'), 'utf-8')
+	fs.readFileSync(path.join(__dirname, 'icons.json'), 'utf-8')
 );
 
 export const icons: Icon[] = iconsJson.icons;
