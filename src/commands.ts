@@ -1,5 +1,8 @@
+import fs from "fs";
+
 import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponentOnDisk, getTemplate, icons } from './icon.js';
 import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
+import { getSvelteComponentPath } from './utils.js';
 
 
 
@@ -76,16 +79,25 @@ export function listIconsCommand (iconArr: IconDS[]) {
 }
 
 export function generateMasterComponentCommand (dirpath: string, overwrite: boolean) {
-	const config = getSvigConfig();
-	const masterTemplate = getTemplate("SvelteMasterComponent.hbs");
+	const outputFilePath = getSvelteComponentPath("", dirpath);
 
-	const currentIcons = config.icons.map(name => icons.find(i => i.name === name));
-	const nametype = config.icons.map(i => `"${i}"`).join(" | ");
-	const firstIcon = currentIcons[0];
-	const restIcons = currentIcons.slice(1);
-	const unknownIcon = icons.find(i => i.name === "question-mark-circle");
+	try {
+		const config = getSvigConfig();
+		const masterTemplate = getTemplate("SvelteMasterComponent.hbs");
 
-	console.log(masterTemplate({
-		nametype, firstIcon, restIcons, unknownIcon
-	}));
+		const currentIcons = config.icons.map(name => icons.find(i => i.name === name));
+		const nametype = config.icons.map(i => `"${i}"`).join(" | ");
+		const firstIcon = currentIcons[0];
+		const restIcons = currentIcons.slice(1);
+		const unknownIcon = icons.find(i => i.name === "question-mark-circle");
+
+		const renderedCode = masterTemplate({
+			nametype, firstIcon, restIcons, unknownIcon
+		});
+		fs.writeFileSync(outputFilePath, renderedCode);
+		console.log(`\tGenerated: '${outputFilePath}'`);
+	} catch (error) {
+		console.log(`\tError: ${error}`);
+		console.log(`\tCould not generate: '${outputFilePath}'`);
+	}
 }
