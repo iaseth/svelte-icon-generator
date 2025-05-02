@@ -6,8 +6,8 @@
 		class?: ClassValue,
 		hidden?: boolean
 	}
-	let { size, hidden=false, ...props }: Props = $props();
-	let px = `${size || 24}px`;
+	let { size=24, hidden=false, ...props }: Props = $props();
+	let px = `${size}px`;
 </script>
 
 <div style:height={px} style:width={px} class={props.class || ""} {hidden}>
