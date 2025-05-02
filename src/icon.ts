@@ -15,10 +15,15 @@ export const icons: IconDS[] = iconsJson.icons;
 
 let cachedTemplate: HandlebarsTemplateDelegate|null = null;
 
+export function getTemplate (filename: string) {
+	const templateSrc = readFile(`templates/${filename}`);
+	const template = Handlebars.compile(templateSrc);
+	return template;
+}
+
 export function generateSvelteComponent(svgContent: string): string {
 	if (cachedTemplate === null) {
-		const templateSrc = readFile('templates/SvelteComponent.hbs');
-		cachedTemplate = Handlebars.compile(templateSrc);
+		cachedTemplate = getTemplate("SvelteComponent.hbs");
 	}
 	return cachedTemplate({ svgContent });
 }

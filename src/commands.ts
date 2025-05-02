@@ -1,4 +1,4 @@
-import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponentOnDisk, icons } from './icon.js';
+import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponentOnDisk, getTemplate, icons } from './icon.js';
 import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 
 
@@ -73,4 +73,19 @@ export function listIconsCommand (iconArr: IconDS[]) {
 		const icon = iconArr[i];
 		console.log(`Icon ${i+1} => '${icon.name}'`);
 	}
+}
+
+export function generateMasterComponentCommand (dirpath: string, overwrite: boolean) {
+	const config = getSvigConfig();
+	const masterTemplate = getTemplate("SvelteMasterComponent.hbs");
+
+	const currentIcons = config.icons.map(name => icons.find(i => i.name === name));
+	const nametype = config.icons.map(i => `"${i}"`).join(" | ");
+	const firstIcon = currentIcons[0];
+	const restIcons = currentIcons.slice(1);
+	const unknownIcon = icons.find(i => i.name === "question-mark-circle");
+
+	console.log(masterTemplate({
+		nametype, firstIcon, restIcons, unknownIcon
+	}));
 }

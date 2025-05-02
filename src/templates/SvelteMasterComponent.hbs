@@ -1,0 +1,24 @@
+
+<script lang="ts">
+	import type { ClassValue } from 'svelte/elements';
+	interface Props {
+		icon: {{{ nametype }}},
+		size?: number,
+		class?: ClassValue,
+		hidden?: boolean
+	}
+	let { icon, size=24, hidden=false, ...props }: Props = $props();
+	let px = `${size}px`;
+</script>
+
+<div style:height={px} style:width={px} class={props.class || ""} {hidden}>
+	{#if icon === "{{firstIcon.name}}" }
+		{{{ firstIcon.svg }}}
+	{{#each restIcons}}
+	{:else if icon === "{{this.name}}" }
+		{{{ this.svg }}}
+	{{/each}}
+	{:else}
+		{{{ unknownIcon.svg }}}
+	{/if}
+</div>

@@ -2,7 +2,7 @@
 
 import { ArgumentParser } from 'argparse';
 import { icons } from './icon.js';
-import { addIconsCommand, removeIconsCommand, generateIconsCommand, listIconsCommand } from './commands.js';
+import { addIconsCommand, removeIconsCommand, generateIconsCommand, listIconsCommand, generateMasterComponentCommand } from './commands.js';
 
 
 
@@ -45,6 +45,10 @@ function main() {
 		case "gen":
 		case "g":
 			generateIconsCommand(args.out, true); break;
+
+		case "master":
+		case "m":
+			generateMasterComponentCommand(args.out, true); break;
 
 		case 'list':
 		case 'l':
