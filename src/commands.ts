@@ -1,17 +1,16 @@
-import fs from "fs";
-
-import { IconDS, deleteSvelteComponentOnDisk, generateSvelteComponentOnDisk, getTemplate, icons } from './icon.js';
+import { IconDS, deleteSvelteComponentOnDisk, generateMasterComponentOnDisk, generateSvelteComponentOnDisk, icons } from './icon.js';
 import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 import { getSvelteComponentPath } from './utils.js';
 
 
 export interface CommandProps {
 	dirpath: string,
+	master: boolean
 }
 
 
 export function addIconsCommand (iconNames: string[], props: CommandProps) {
-	const { dirpath } = props;
+	const { dirpath, master } = props;
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to add!`); return;
 	}
@@ -27,16 +26,22 @@ export function addIconsCommand (iconNames: string[], props: CommandProps) {
 				console.log(`Icon was added: '${iconName}'`);
 				config.icons.push(iconName);
 				saveSvigConfig(config);
-				generateSvelteComponentOnDisk(icon, dirpath, true);
+				if (!master) {
+					generateSvelteComponentOnDisk(icon, dirpath, true);
+				}
 			}
 		} else {
 			console.log(`Icon not found: '${iconName}'`);
 		}
 	}
+
+	if (master) {
+		generateMasterComponentOnDisk(config.icons, dirpath);
+	}
 }
 
 export function removeIconsCommand (iconNames: string[], props: CommandProps) {
-	const { dirpath } = props;
+	const { dirpath, master } = props;
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to remove!`); return;
 	}
@@ -57,13 +62,22 @@ export function removeIconsCommand (iconNames: string[], props: CommandProps) {
 		}
 		deleteSvelteComponentOnDisk(iconName, dirpath);
 	}
+
+	if (master) {
+		generateMasterComponentOnDisk(config.icons, dirpath);
+	}
 }
 
 export function generateIconsCommand (props: CommandProps, overwrite: boolean) {
-	const { dirpath } = props;
+	const { dirpath, master } = props;
 	const config = getSvigConfig();
 	if (config.icons.length === 0) {
 		console.log(`No icons found in config: '${svigConfigPath}'`)
+		return;
+	}
+
+	if (master) {
+		generateMasterComponentOnDisk(config.icons, dirpath);
 		return;
 	}
 
@@ -91,19 +105,7 @@ export function generateMasterComponentCommand (props: CommandProps, overwrite: 
 
 	try {
 		const config = getSvigConfig();
-		const masterTemplate = getTemplate("SvelteMasterComponent.hbs");
-
-		const currentIcons = config.icons.map(name => icons.find(i => i.name === name));
-		const nametype = config.icons.map(i => `"${i}"`).join(" | ");
-		const firstIcon = currentIcons[0];
-		const restIcons = currentIcons.slice(1);
-		const unknownIcon = icons.find(i => i.name === "question-mark-circle");
-
-		const renderedCode = masterTemplate({
-			nametype, firstIcon, restIcons, unknownIcon
-		});
-		fs.writeFileSync(outputFilePath, renderedCode);
-		console.log(`\tGenerated: '${outputFilePath}'`);
+		generateMasterComponentOnDisk(config.icons, dirpath);
 	} catch (error) {
 		console.log(`\tError: ${error}`);
 		console.log(`\tCould not generate: '${outputFilePath}'`);

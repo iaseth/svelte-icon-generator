@@ -20,15 +20,16 @@ function main() {
 		metavar: 'DIRPATH',
 		default: "src/lib/components/svig"
 	});
-	parser.add_argument('-s', '--save', {
+	parser.add_argument('-m', '--master', {
 		action: 'store_true',
-		help: 'Save to disk',
+		help: 'Generate a single SvigIcon component',
 		default: false
 	});
 	const [args, rest] = parser.parse_known_args();
 
 	const props: CommandProps = {
-		dirpath: args.dirpath
+		dirpath: args.dirpath,
+		master: args.master
 	};
 
 	switch (args.command) {

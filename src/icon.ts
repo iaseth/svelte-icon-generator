@@ -58,3 +58,31 @@ export function deleteSvelteComponentOnDisk(iconName: string, dirpath: string) {
 		console.log(`\tNot found: '${filepath}'`);
 	}
 }
+
+export function generateMasterComponentOnDisk(iconNames: string[], dirpath: string, overwrite: boolean = true) {
+	const outputFilePath = getSvelteComponentPath("", dirpath);
+
+	if (!overwrite && fs.existsSync(outputFilePath)) {
+		console.log(`\tExists: '${outputFilePath}'`);
+		return;
+	}
+
+	try {
+		const masterTemplate = getTemplate("SvelteMasterComponent.hbs");
+
+		const currentIcons = iconNames.map(name => icons.find(i => i.name === name));
+		const nametype = iconNames.map(i => `"${i}"`).join(" | ");
+		const firstIcon = currentIcons[0];
+		const restIcons = currentIcons.slice(1);
+		const unknownIcon = icons.find(i => i.name === "question-mark-circle");
+
+		const renderedCode = masterTemplate({
+			nametype, firstIcon, restIcons, unknownIcon
+		});
+		fs.writeFileSync(outputFilePath, renderedCode);
+		console.log(`\tGenerated: '${outputFilePath}'`);
+	} catch (error) {
+		console.log(`\tError: ${error}`);
+		console.log(`\tCould not generate: '${outputFilePath}'`);
+	}
+}
