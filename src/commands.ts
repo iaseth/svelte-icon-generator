@@ -21,11 +21,14 @@ export function addIconsCommand (iconNames: string[], props: CommandProps) {
 		if (icon) {
 			if (config.icons.includes(iconName)) {
 				console.log(`Icon already added: '${iconName}'`);
-				generateSvelteComponentOnDisk(icon, dirpath, false);
+				if (!master) {
+					generateSvelteComponentOnDisk(icon, dirpath, false);
+				}
 			} else {
 				console.log(`Icon was added: '${iconName}'`);
 				config.icons.push(iconName);
 				saveSvigConfig(config);
+
 				if (!master) {
 					generateSvelteComponentOnDisk(icon, dirpath, true);
 				}
