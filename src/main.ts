@@ -2,7 +2,7 @@
 
 import { ArgumentParser } from 'argparse';
 import { icons } from './icon.js';
-import { addIconsCommand, removeIconsCommand, generateIconsCommand, listIconsCommand, generateMasterComponentCommand } from './commands.js';
+import { addIconsCommand, removeIconsCommand, generateIconsCommand, listIconsCommand, generateMasterComponentCommand, CommandProps } from './commands.js';
 
 
 
@@ -15,9 +15,9 @@ function main() {
 	parser.add_argument('command', {
 		help: 'The command to run'
 	});
-	parser.add_argument('-o', '--out', {
+	parser.add_argument('-d', '--dirpath', {
 		help: 'Output directory path',
-		metavar: 'DIR',
+		metavar: 'DIRPATH',
 		default: "src/lib/components/svig"
 	});
 	parser.add_argument('-s', '--save', {
@@ -27,28 +27,32 @@ function main() {
 	});
 	const [args, rest] = parser.parse_known_args();
 
+	const props: CommandProps = {
+		dirpath: args.dirpath
+	};
+
 	switch (args.command) {
 		case "add":
 		case "a":
-			addIconsCommand(rest, args.out); break;
+			addIconsCommand(rest, props); break;
 
 		case "remove":
 		case "rm":
 		case "r":
-			removeIconsCommand(rest, args.out); break;
+			removeIconsCommand(rest, props); break;
 
 		case "create":
 		case "c":
-			generateIconsCommand(args.out, false); break;
+			generateIconsCommand(props, false); break;
 
 		case "generate":
 		case "gen":
 		case "g":
-			generateIconsCommand(args.out, true); break;
+			generateIconsCommand(props, true); break;
 
 		case "master":
 		case "m":
-			generateMasterComponentCommand(args.out, true); break;
+			generateMasterComponentCommand(props, true); break;
 
 		case 'list':
 		case 'l':

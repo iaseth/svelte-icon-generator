@@ -5,8 +5,13 @@ import { getSvigConfig, saveSvigConfig, svigConfigPath } from './config.js';
 import { getSvelteComponentPath } from './utils.js';
 
 
+export interface CommandProps {
+	dirpath: string,
+}
 
-export function addIconsCommand (iconNames: string[], dirpath: string) {
+
+export function addIconsCommand (iconNames: string[], props: CommandProps) {
+	const { dirpath } = props;
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to add!`); return;
 	}
@@ -30,7 +35,8 @@ export function addIconsCommand (iconNames: string[], dirpath: string) {
 	}
 }
 
-export function removeIconsCommand (iconNames: string[], dirpath: string) {
+export function removeIconsCommand (iconNames: string[], props: CommandProps) {
+	const { dirpath } = props;
 	if (iconNames.length === 0) {
 		console.log(`Please provide icons to remove!`); return;
 	}
@@ -53,7 +59,8 @@ export function removeIconsCommand (iconNames: string[], dirpath: string) {
 	}
 }
 
-export function generateIconsCommand (dirpath: string, overwrite: boolean) {
+export function generateIconsCommand (props: CommandProps, overwrite: boolean) {
+	const { dirpath } = props;
 	const config = getSvigConfig();
 	if (config.icons.length === 0) {
 		console.log(`No icons found in config: '${svigConfigPath}'`)
@@ -78,7 +85,8 @@ export function listIconsCommand (iconArr: IconDS[]) {
 	}
 }
 
-export function generateMasterComponentCommand (dirpath: string, overwrite: boolean) {
+export function generateMasterComponentCommand (props: CommandProps, overwrite: boolean) {
+	const { dirpath } = props;
 	const outputFilePath = getSvelteComponentPath("", dirpath);
 
 	try {
