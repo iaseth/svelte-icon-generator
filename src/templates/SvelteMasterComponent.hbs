@@ -3,7 +3,6 @@
 	import type { ClassValue } from 'svelte/elements';
 
 	export type SvigIconName = {{{ nametype }}};
-	export const SvigIconsAll: string[] = [{{{ iconsArray }}}];
 
 	interface Props {
 		icon: SvigIconName,
@@ -13,6 +12,10 @@
 	}
 	let { icon, size=24, hidden=false, ...props }: Props = $props();
 	let px = `${size}px`;
+</script>
+
+<script module>
+	export const SvigIconsAll: SvigIconName[] = [{{{ iconsArray }}}];
 </script>
 
 <div style:height={px} style:width={px} class={props.class || ""} {hidden}>
