@@ -72,12 +72,14 @@ export function generateMasterComponentOnDisk(iconNames: string[], dirpath: stri
 
 		const currentIcons = iconNames.map(name => icons.find(i => i.name === name));
 		const nametype = iconNames.map(i => `"${i}"`).join(" | ");
+		const iconsArray = iconNames.map(i => `"${i}"`).join(", ");
 		const firstIcon = currentIcons[0];
 		const restIcons = currentIcons.slice(1);
 		const unknownIcon = icons.find(i => i.name === "question-mark-circle");
 
 		const renderedCode = masterTemplate({
-			nametype, firstIcon, restIcons, unknownIcon
+			nametype, iconsArray,
+			firstIcon, restIcons, unknownIcon
 		});
 		fs.writeFileSync(outputFilePath, renderedCode);
 		console.log(`\tGenerated: '${outputFilePath}'`);
