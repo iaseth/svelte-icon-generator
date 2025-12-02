@@ -11,7 +11,7 @@
 		hidden?: boolean
 	}
 	let { icon, size=24, hidden=false, ...props }: Props = $props();
-	let px = `${size}px`;
+	let px = $derived(`${size}px`);
 </script>
 
 <script module>
