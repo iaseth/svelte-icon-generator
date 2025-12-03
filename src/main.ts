@@ -20,16 +20,10 @@ function main() {
 		metavar: 'DIRPATH',
 		default: "src/lib/components/svig"
 	});
-	parser.add_argument('-m', '--master', {
-		action: 'store_true',
-		help: 'Generate a single SvigIcon component',
-		default: false
-	});
 	const [args, rest] = parser.parse_known_args();
 
 	const props: CommandProps = {
-		dirpath: args.dirpath,
-		master: args.master
+		dirpath: args.dirpath
 	};
 
 	switch (args.command) {
@@ -49,10 +43,6 @@ function main() {
 		case "generate":
 		case "gen":
 		case "g":
-			generateIconsCommand(props, true); break;
-
-		case "master":
-		case "m":
 			generateMasterComponentCommand(props, true); break;
 
 		case 'list':
